@@ -3,280 +3,251 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ember & Co. — Marketing that moves</title>
+<title>Git & GitHub for Data Engineers — Class Notes</title>
 
-<!-- Bootstrap CDN -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
   :root{
-    --ink:#12141C;
-    --ink-soft:#1B1E29;
-    --gold:#E8A33D;
-    --coral:#FF6B4A;
-    --cream:#F5F0E8;
-    --line:rgba(245,240,232,0.12);
+    --bg:#0D1117;
+    --bg-soft:#151B23;
+    --line:rgba(230,237,243,0.1);
+    --text:#E6EDF3;
+    --text-dim:rgba(230,237,243,0.62);
+    --green:#3FB950;
+    --purple:#A371F7;
+    --amber:#D29922;
   }
 
   body{
-    background:var(--ink);
-    color:var(--cream);
-    font-family:'Inter',sans-serif;
-    overflow-x:hidden;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope',sans-serif;
   }
-
-  h1,h2,h3,.display-font{
-    font-family:'Space Grotesk',sans-serif;
-  }
+  h1,h2,h3,.mono{ font-family:'JetBrains Mono',monospace; }
+  code, pre, .tag-pill{ font-family:'JetBrains Mono',monospace; }
 
   a{ text-decoration:none; }
 
   /* Nav */
-  .navbar{
-    background:transparent;
-    padding:1.5rem 0;
-  }
+  .navbar{ padding:1.25rem 0; background:transparent; }
   .navbar-brand{
-    font-family:'Space Grotesk',sans-serif;
+    font-family:'JetBrains Mono',monospace;
     font-weight:700;
-    font-size:1.4rem;
-    color:var(--cream) !important;
-    letter-spacing:-0.02em;
+    color:var(--text) !important;
   }
-  .navbar-brand span{ color:var(--gold); }
+  .navbar-brand .dot{ color:var(--green); }
   .nav-link{
-    color:var(--cream) !important;
-    opacity:0.75;
-    font-size:0.95rem;
-    margin:0 0.75rem;
-    transition:opacity .2s ease;
+    color:var(--text-dim) !important;
+    font-size:0.92rem;
+    margin:0 0.65rem;
   }
-  .nav-link:hover{ opacity:1; }
-  .btn-cta{
-    background:var(--gold);
-    color:var(--ink);
-    font-weight:600;
-    padding:0.6rem 1.5rem;
-    border-radius:2px;
-    border:none;
-    transition:transform .2s ease, background .2s ease;
-  }
-  .btn-cta:hover{
-    background:var(--coral);
-    color:var(--ink);
-    transform:translateY(-2px);
-  }
+  .nav-link:hover{ color:var(--text) !important; }
 
   /* Hero */
   .hero{
-    position:relative;
-    padding:6rem 0 4rem;
+    padding:5rem 0 3.5rem;
     border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(circle at 85% 20%, rgba(163,113,247,0.12), transparent 45%),
+      radial-gradient(circle at 10% 80%, rgba(63,185,80,0.10), transparent 45%);
   }
-  .hero::before{
-    content:"";
-    position:absolute;
-    top:0; right:-10%;
-    width:60%; height:140%;
-    background:linear-gradient(160deg, transparent 45%, var(--ink-soft) 45.5%);
-    z-index:0;
-  }
-  .hero-content{ position:relative; z-index:1; }
-  .eyebrow{
-    color:var(--coral);
-    font-weight:600;
-    letter-spacing:0.15em;
-    text-transform:uppercase;
+  .course-label{
+    display:inline-block;
+    border:1px solid var(--line);
+    color:var(--text-dim);
     font-size:0.8rem;
+    padding:0.3rem 0.8rem;
+    border-radius:20px;
+    margin-bottom:1.2rem;
   }
+  .course-label .fa-solid{ color:var(--green); margin-right:0.4rem; }
   .hero h1{
-    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    font-size:clamp(2.2rem,5vw,3.4rem);
     font-weight:700;
-    line-height:1.05;
-    letter-spacing:-0.02em;
-    margin:1rem 0 1.5rem;
-  }
-  .hero h1 em{
-    font-style:normal;
-    color:var(--gold);
+    line-height:1.15;
+    letter-spacing:-0.01em;
   }
   .hero p.lead{
-    color:rgba(245,240,232,0.7);
-    font-size:1.15rem;
-    max-width:520px;
+    color:var(--text-dim);
+    font-size:1.1rem;
+    max-width:640px;
+    font-family:'Manrope',sans-serif;
   }
 
-  /* Ticker - signature element */
-  .ticker-wrap{
-    background:var(--gold);
-    color:var(--ink);
-    overflow:hidden;
-    white-space:nowrap;
-    padding:0.6rem 0;
-    border-bottom:1px solid var(--line);
-  }
-  .ticker{
-    display:inline-block;
-    padding-left:100%;
-    animation:ticker 28s linear infinite;
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:600;
-    font-size:0.9rem;
-  }
-  .ticker span{ margin:0 2rem; }
-  .ticker span i{ margin-right:0.4rem; }
-  @keyframes ticker{
-    0%{ transform:translateX(0); }
-    100%{ transform:translateX(-100%); }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .ticker{ animation:none; padding-left:2rem; }
-  }
-
-  /* Services */
-  .section{ padding:5rem 0; }
-  .section-label{
-    color:var(--coral);
-    text-transform:uppercase;
-    letter-spacing:0.15em;
+  /* Section shared */
+  .section{ padding:4.5rem 0; border-bottom:1px solid var(--line); }
+  .eyebrow{
+    color:var(--green);
     font-size:0.8rem;
-    font-weight:600;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    font-weight:700;
   }
   .section-title{
-    font-size:clamp(1.8rem, 3vw, 2.6rem);
+    font-size:clamp(1.6rem,3vw,2.2rem);
     font-weight:700;
-    letter-spacing:-0.02em;
-    margin-top:0.75rem;
+    margin-top:0.5rem;
+    letter-spacing:-0.01em;
   }
-  .service-card{
-    background:var(--ink-soft);
+
+  /* Why GitHub cards */
+  .why-card{
+    background:var(--bg-soft);
     border:1px solid var(--line);
-    border-radius:4px;
-    padding:2rem;
+    border-radius:6px;
+    padding:1.75rem;
     height:100%;
-    transition:border-color .25s ease, transform .25s ease;
+    transition:border-color .2s ease;
   }
-  .service-card:hover{
-    border-color:var(--gold);
-    transform:translateY(-4px);
+  .why-card:hover{ border-color:var(--green); }
+  .why-num{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--green);
+    font-size:0.85rem;
+    margin-bottom:0.75rem;
   }
-  .service-icon{
-    width:48px; height:48px;
+  .why-card h3{
+    font-size:1.1rem;
+    font-weight:600;
+    font-family:'Manrope',sans-serif;
+    margin-bottom:0.5rem;
+  }
+  .why-card p{
+    color:var(--text-dim);
+    font-size:0.92rem;
+    margin-bottom:0;
+    font-family:'Manrope',sans-serif;
+  }
+
+  /* Code block */
+  .code-block{
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:0;
+    overflow:hidden;
+    margin:1.25rem 0;
+  }
+  .code-block .code-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0.6rem 1rem;
+    border-bottom:1px solid var(--line);
+    font-size:0.78rem;
+    color:var(--text-dim);
+  }
+  .code-block pre{
+    margin:0;
+    padding:1.1rem 1.25rem;
+    font-size:0.88rem;
+    line-height:1.6;
+    color:var(--text);
+    overflow-x:auto;
+  }
+  .code-block .cmt{ color:var(--text-dim); }
+  .code-block .kw{ color:var(--purple); }
+  .code-block .str{ color:var(--amber); }
+  .code-block .green{ color:var(--green); }
+
+  /* Tag pill */
+  .tag-pill{
+    display:inline-block;
+    background:rgba(63,185,80,0.12);
+    color:var(--green);
+    border:1px solid rgba(63,185,80,0.35);
+    padding:0.15rem 0.6rem;
+    border-radius:20px;
+    font-size:0.82rem;
+  }
+
+  /* Tags table */
+  .tag-table{
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .tag-table .row-item{
+    display:flex;
+    padding:1rem 1.25rem;
+    border-bottom:1px solid var(--line);
+    align-items:flex-start;
+    gap:1rem;
+  }
+  .tag-table .row-item:last-child{ border-bottom:none; }
+  .tag-table .row-item .cmd{
+    min-width:220px;
+    color:var(--green);
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.88rem;
+  }
+  .tag-table .row-item .desc{
+    color:var(--text-dim);
+    font-size:0.92rem;
+  }
+
+  /* Workflow timeline */
+  .flow-step{
+    position:relative;
+    padding-left:2.5rem;
+    padding-bottom:2rem;
+    border-left:2px solid var(--line);
+    margin-left:0.9rem;
+  }
+  .flow-step:last-child{ border-left-color:transparent; padding-bottom:0; }
+  .flow-step::before{
+    content:attr(data-step);
+    position:absolute;
+    left:-1.15rem;
+    top:0;
+    width:2.1rem; height:2.1rem;
+    background:var(--bg-soft);
+    border:2px solid var(--green);
+    color:var(--green);
+    font-family:'JetBrains Mono',monospace;
+    font-size:0.8rem;
+    font-weight:700;
+    border-radius:50%;
     display:flex; align-items:center; justify-content:center;
-    background:rgba(232,163,61,0.12);
-    color:var(--gold);
-    border-radius:4px;
-    font-size:1.2rem;
-    margin-bottom:1.25rem;
   }
-  .service-card h3{
-    font-size:1.25rem;
-    margin-bottom:0.6rem;
+  .flow-step h3{
+    font-size:1.05rem;
+    font-weight:600;
+    font-family:'Manrope',sans-serif;
+    margin-bottom:0.3rem;
   }
-  .service-card p{
-    color:rgba(245,240,232,0.65);
-    font-size:0.95rem;
+  .flow-step p{
+    color:var(--text-dim);
+    font-size:0.92rem;
+    font-family:'Manrope',sans-serif;
     margin-bottom:0;
   }
 
-  /* Stats */
-  .stats-band{
-    background:var(--ink-soft);
-    border-top:1px solid var(--line);
-    border-bottom:1px solid var(--line);
-    padding:3.5rem 0;
+  /* Callout */
+  .callout{
+    background:rgba(210,153,34,0.08);
+    border:1px solid rgba(210,153,34,0.35);
+    border-radius:6px;
+    padding:1.25rem 1.5rem;
+    display:flex;
+    gap:1rem;
+    align-items:flex-start;
   }
-  .stat-num{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:clamp(2.2rem,4vw,3.2rem);
-    font-weight:700;
-    color:var(--gold);
-    line-height:1;
-  }
-  .stat-label{
-    color:rgba(245,240,232,0.6);
-    font-size:0.9rem;
-    margin-top:0.5rem;
-  }
-
-  /* Testimonial */
-  .testimonial{
-    background:var(--ink);
-    border:1px solid var(--line);
-    border-left:3px solid var(--coral);
-    border-radius:4px;
-    padding:2.5rem;
-  }
-  .testimonial p{
-    font-size:1.25rem;
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:500;
-    line-height:1.5;
-  }
-  .testimonial .who{
-    color:rgba(245,240,232,0.6);
-    font-size:0.9rem;
-    margin-top:1rem;
-  }
-
-  /* CTA */
-  .cta-band{
-    background:linear-gradient(120deg, var(--coral), var(--gold));
-    color:var(--ink);
-    padding:4rem 0;
-    border-radius:4px;
-  }
-  .cta-band h2{
-    font-weight:700;
-    font-size:clamp(1.8rem,3vw,2.6rem);
-    letter-spacing:-0.02em;
-  }
-  .btn-dark-cta{
-    background:var(--ink);
-    color:var(--cream);
-    font-weight:600;
-    padding:0.75rem 2rem;
-    border-radius:2px;
-    border:none;
-    transition:transform .2s ease;
-  }
-  .btn-dark-cta:hover{
-    transform:translateY(-2px);
-    color:var(--cream);
-  }
+  .callout i{ color:var(--amber); font-size:1.2rem; margin-top:0.15rem; }
+  .callout p{ margin-bottom:0; color:var(--text-dim); font-size:0.92rem; }
 
   footer{
-    padding:3rem 0 2rem;
-    border-top:1px solid var(--line);
+    padding:2.5rem 0;
+    text-align:center;
+    color:var(--text-dim);
+    font-size:0.85rem;
   }
-  footer .foot-brand{
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:700;
-    font-size:1.2rem;
-  }
-  footer .foot-brand span{ color:var(--gold); }
-  footer a.foot-link{
-    color:rgba(245,240,232,0.6);
-    font-size:0.9rem;
-  }
-  footer a.foot-link:hover{ color:var(--gold); }
-  .social-icon{
-    width:36px; height:36px;
-    display:inline-flex; align-items:center; justify-content:center;
-    border:1px solid var(--line);
-    border-radius:50%;
-    color:var(--cream);
-    margin-left:0.5rem;
-    transition:border-color .2s ease, color .2s ease;
-  }
-  .social-icon:hover{ border-color:var(--gold); color:var(--gold); }
 
-  :focus-visible{
-    outline:2px solid var(--gold);
-    outline-offset:2px;
-  }
+  :focus-visible{ outline:2px solid var(--green); outline-offset:2px; }
 </style>
 </head>
 <body>
@@ -284,143 +255,195 @@
 <!-- Nav -->
 <nav class="navbar navbar-expand-lg">
   <div class="container">
-    <a class="navbar-brand" href="#">Ember<span>&</span>Co.</a>
+    <a class="navbar-brand" href="#"><span class="dot">$</span> de-notes/git-github</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" style="border-color:var(--line);">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="nav">
-      <a class="nav-link" href="#services">Services</a>
-      <a class="nav-link" href="#work">Work</a>
-      <a class="nav-link" href="#testimonial">Clients</a>
-      <a class="btn btn-cta ms-lg-3 mt-2 mt-lg-0" href="#contact">Start a project</a>
+      <a class="nav-link" href="#why">Why GitHub</a>
+      <a class="nav-link" href="#tags">Git Tags</a>
+      <a class="nav-link" href="#workflow">Workflow</a>
+      <a class="nav-link" href="#resources">Resources</a>
     </div>
   </div>
 </nav>
 
 <!-- Hero -->
 <header class="hero">
-  <div class="container hero-content">
-    <div class="row">
-      <div class="col-lg-7">
-        <p class="eyebrow">KETRO SITHOLE  marketing agency</p>
-        <h1>We turn attention into Valuable Skills or Data <em>revenue</em>.</h1>
-        <p class="lead">Ember & Co. builds brands, campaigns, and content that get noticed — and get results. Strategy, design, and media, under one roof.</p>
-        <div class="d-flex gap-3 mt-4">
-          <a href="#contact" class="btn btn-cta">Book a call</a>
-          <a href="#work" class="btn btn-outline-light" style="border-color:var(--line); border-radius:2px; color:var(--cream);">See our work</a>
-        </div>
-      </div>
-    </div>
+  <div class="container">
+    <span class="course-label"><i class="fa-solid fa-database"></i>Data Engineering — Week Notes</span>
+    <h1>Git & GitHub, explained for<br>data pipelines.</h1>
+    <p class="lead mt-3">Version control isn't just for software engineers. As data engineers, we version pipelines, schemas, and configs the same way — and GitHub is where that history lives, gets reviewed, and gets deployed.</p>
   </div>
 </header>
 
-<!-- Ticker -->
-<div class="ticker-wrap">
-  <div class="ticker">
-    <span><i class="fa-solid fa-arrow-trend-up"></i>212% avg. traffic lift</span>
-    <span><i class="fa-solid fa-star"></i>40+ brands launched</span>
-    <span><i class="fa-solid fa-bullseye"></i>$18M in tracked ad spend managed</span>
-    <span><i class="fa-solid fa-arrow-trend-up"></i>212% avg. traffic lift</span>
-    <span><i class="fa-solid fa-star"></i>40+ brands launched</span>
-    <span><i class="fa-solid fa-bullseye"></i>$18M in tracked ad spend managed</span>
-  </div>
-</div>
-
-<!-- Services -->
-<section class="section" id="services">
+<!-- Why GitHub matters -->
+<section class="section" id="why">
   <div class="container">
-    <p class="section-label">What we do</p>
-    <h2 class="section-title mb-5">Services built around outcomes, not deliverables.</h2>
+    <p class="eyebrow">01 — Foundations</p>
+    <h2 class="section-title mb-5">Why GitHub matters in data engineering</h2>
     <div class="row g-4">
-      <div class="col-md-4">
-        <div class="service-card">
-          <div class="service-icon"><i class="fa-solid fa-compass"></i></div>
-          <h3>Brand Strategy</h3>
-          <p>Positioning, messaging, and identity systems that give your brand a clear reason to be remembered.</p>
+      <div class="col-md-6 col-lg-3">
+        <div class="why-card">
+          <div class="why-num">// 01</div>
+          <h3>Version history</h3>
+          <p>Every change to a pipeline, DAG, or SQL model is tracked. If a transformation breaks prod, you can see exactly what changed and revert it in seconds.</p>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="service-card">
-          <div class="service-icon"><i class="fa-solid fa-chart-line"></i></div>
-          <h3>Performance Media</h3>
-          <p>Paid social and search campaigns managed for efficiency, tested weekly, reported without spin.</p>
+      <div class="col-md-6 col-lg-3">
+        <div class="why-card">
+          <div class="why-num">// 02</div>
+          <h3>Code review</h3>
+          <p>Pull requests let a teammate review your schema migration or Airflow DAG before it touches production data — catching mistakes before they cost you.</p>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="service-card">
-          <div class="service-icon"><i class="fa-solid fa-pen-nib"></i></div>
-          <h3>Content & Creative</h3>
-          <p>Video, copy, and design produced in-house so every asset feels like it came from one brand voice.</p>
+      <div class="col-md-6 col-lg-3">
+        <div class="why-card">
+          <div class="why-num">// 03</div>
+          <h3>CI/CD pipelines</h3>
+          <p>GitHub Actions can automatically test your dbt models, lint SQL, or deploy a Spark job the moment code is merged — no manual steps, no "it works on my machine."</p>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- Stats -->
-<div class="stats-band" id="work">
-  <div class="container">
-    <div class="row text-center g-4">
-      <div class="col-6 col-md-3">
-        <div class="stat-num">8yrs</div>
-        <div class="stat-label">In business</div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="stat-num">120+</div>
-        <div class="stat-label">Campaigns shipped</div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="stat-num">4.9/5</div>
-        <div class="stat-label">Client rating</div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="stat-num">92%</div>
-        <div class="stat-label">Client retention</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Testimonial -->
-<section class="section" id="testimonial">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <div class="testimonial">
-          <p>"Ember & Co. rebuilt our funnel in six weeks and our cost per lead dropped by a third. They act like an in-house team, not a vendor."</p>
-          <div class="who">— Head of Growth, mid-market retail client</div>
+      <div class="col-md-6 col-lg-3">
+        <div class="why-card">
+          <div class="why-num">// 04</div>
+          <h3>Collaboration at scale</h3>
+          <p>Multiple engineers can work on the same warehouse repo simultaneously using branches, without overwriting each other's work.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="section" id="contact">
+<!-- Git Tags -->
+<section class="section" id="tags">
   <div class="container">
-    <div class="cta-band text-center">
-      <h2>Ready to make some noise?</h2>
-      <p class="mb-4" style="max-width:500px; margin-left:auto; margin-right:auto;">Tell us about your brand and goals. We'll reply within one business day with next steps.</p>
-      <a href="mailto:hello@emberandco.example" class="btn btn-dark-cta">hello@emberandco.example</a>
+    <p class="eyebrow">02 — Git Tags</p>
+    <h2 class="section-title">What tags are, and why we use them</h2>
+    <p class="mt-3" style="color:var(--text-dim); max-width:680px;">
+      A <span class="tag-pill">tag</span> is a permanent pointer to one specific commit — usually one that marks a release. Unlike a branch, a tag doesn't move as new commits come in. Think of it as a bookmark stuck to one exact point in history.
+    </p>
+
+    <div class="row g-4 mt-2">
+      <div class="col-lg-6">
+        <h3 class="h5 mb-3">Why tags matter for a data pipeline</h3>
+        <ul style="color:var(--text-dim); font-size:0.95rem; line-height:1.9;">
+          <li>Mark exactly which pipeline version produced last quarter's report — so results are reproducible.</li>
+          <li>Roll back a broken deployment to a known-good release instantly (<code>v1.4.0</code> instead of guessing a commit hash).</li>
+          <li>Pin a dependency: "our warehouse schema uses tag <code>schema-v3</code>," so nothing downstream breaks silently.</li>
+          <li>Give non-engineers (analysts, stakeholders) a clean version number instead of a 40-character commit hash.</li>
+        </ul>
+      </div>
+      <div class="col-lg-6">
+        <div class="code-block">
+          <div class="code-head"><span>terminal</span><span>bash</span></div>
+          <pre><span class="cmt"># create a lightweight tag on the current commit</span>
+git tag v1.0.0
+
+<span class="cmt"># create an annotated tag (recommended — stores author, date, message)</span>
+git tag <span class="kw">-a</span> v1.0.0 <span class="kw">-m</span> <span class="str">"first stable ETL release"</span>
+
+<span class="cmt"># push a single tag to GitHub</span>
+git push origin v1.0.0
+
+<span class="cmt"># push ALL local tags to GitHub</span>
+git push origin --tags
+
+<span class="cmt"># see all tags in the repo</span>
+git tag
+
+<span class="cmt"># check out the exact code from a tagged release</span>
+git checkout v1.0.0</pre>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="h5 mt-5 mb-3">Common tag naming patterns you'll see</h3>
+    <div class="tag-table">
+      <div class="row-item">
+        <div class="cmd">v1.0.0, v1.1.0, v2.0.0</div>
+        <div class="desc">Semantic versioning — <strong>major.minor.patch</strong>. Patch = bug fix, minor = new feature (backwards compatible), major = breaking change.</div>
+      </div>
+      <div class="row-item">
+        <div class="cmd">schema-v3</div>
+        <div class="desc">Marks a specific version of a database schema — useful when a table structure changes and downstream jobs depend on knowing which version they're reading.</div>
+      </div>
+      <div class="row-item">
+        <div class="cmd">release-2026-08-20</div>
+        <div class="desc">Date-based tags, common in pipelines that deploy on a schedule rather than by feature.</div>
+      </div>
+      <div class="row-item">
+        <div class="cmd">rc1, rc2 (release candidate)</div>
+        <div class="desc">Marks a build that's being tested before it's promoted to a full release tag.</div>
+      </div>
+    </div>
+
+    <div class="callout mt-4">
+      <i class="fa-solid fa-lightbulb"></i>
+      <p><strong>Lightweight vs. annotated:</strong> a lightweight tag is just a name pointing at a commit. An annotated tag (<code>-a</code>) is a full object with its own author, date, and message — use annotated tags for anything you'd call a "release."</p>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
+<!-- Workflow -->
+<section class="section" id="workflow">
+  <div class="container">
+    <p class="eyebrow">03 — Applied workflow</p>
+    <h2 class="section-title mb-5">A typical data engineering Git workflow</h2>
+
+    <div class="flow-step" data-step="1">
+      <h3>Branch off main</h3>
+      <p><code>git checkout -b feature/add-customer-dim</code> — build your new dbt model or DAG in isolation, without touching the pipeline everyone else depends on.</p>
+    </div>
+    <div class="flow-step" data-step="2">
+      <h3>Commit in small, logical steps</h3>
+      <p><code>git commit -m "add customer dimension table"</code> — small commits make it easy to find exactly where a bug was introduced later.</p>
+    </div>
+    <div class="flow-step" data-step="3">
+      <h3>Open a pull request</h3>
+      <p>Push your branch and open a PR on GitHub. A teammate reviews the SQL/DAG logic before it merges into <code>main</code>.</p>
+    </div>
+    <div class="flow-step" data-step="4">
+      <h3>CI runs automatically</h3>
+      <p>GitHub Actions lints your code, runs dbt tests, and checks the pipeline builds — before a human even has to look.</p>
+    </div>
+    <div class="flow-step" data-step="5">
+      <h3>Merge and tag the release</h3>
+      <p>Once merged, tag the commit (<code>git tag -a v1.2.0</code>) so this exact pipeline version can always be reproduced or rolled back to.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Resources -->
+<section class="section" style="border-bottom:none;" id="resources">
+  <div class="container">
+    <p class="eyebrow">04 — Keep learning</p>
+    <h2 class="section-title mb-4">Resources for this week</h2>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <a href="https://git-scm.com/book/en/v2" target="_blank" class="why-card d-block">
+          <h3><i class="fa-solid fa-book me-2" style="color:var(--green);"></i>Pro Git (free book)</h3>
+          <p>The definitive reference for how Git actually works under the hood.</p>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="https://docs.github.com/en/actions" target="_blank" class="why-card d-block">
+          <h3><i class="fa-solid fa-gears me-2" style="color:var(--green);"></i>GitHub Actions docs</h3>
+          <p>Official docs for automating tests and deployments on merge.</p>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="https://docs.github.com/en/repositories/releasing-projects-on-github" target="_blank" class="why-card d-block">
+          <h3><i class="fa-solid fa-tag me-2" style="color:var(--green);"></i>GitHub Releases</h3>
+          <p>How tags connect to GitHub's Releases feature for shipping versions.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
-  <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
-    <div class="foot-brand">Ember<span>&</span>Co.</div>
-    <div>
-      <a class="foot-link me-3" href="#services">Services</a>
-      <a class="foot-link me-3" href="#work">Work</a>
-      <a class="foot-link" href="#contact">Contact</a>
-    </div>
-    <div>
-      <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
-      <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
-      <a href="#" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
-    </div>
-  </div>
+  Data Engineering — Class Notes &middot; last updated for this week's session
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
